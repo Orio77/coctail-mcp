@@ -1,8 +1,8 @@
 from config.logger import logger
 
-from service.cocktail_data_service import create_cocktails, create_ingredients
-from service.pinecone_service import get_num_vectors, clear_vectorspace, upsert_cocktail_embeddings, upsert_ingredient_embeddings
-from service.embedding_service import create_cocktail_embeddings, create_ingredient_embeddings
+from services.cocktail_data_service import create_cocktails, create_ingredients
+from services.pinecone_service import get_num_vectors, clear_vectorspace, upsert_cocktail_embeddings, upsert_ingredient_embeddings
+from services.embedding_service import create_cocktail_embeddings, create_ingredient_embeddings
 
 
 cocktails = create_cocktails()
