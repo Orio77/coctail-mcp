@@ -17,3 +17,9 @@ def create_embeddings(cocktails: list[Cocktail]):
         embeddings_map[cocktail.id] = [float(val) for val in embedding_response.embeddings[0]]
 
     return embeddings_map
+
+def embed_query(query: str):
+    model = os.getenv('embedding_model')
+
+    embedding_response = ollama.embed(model=model, input=query)
+    return [float(val) for val in embedding_response.embeddings[0]]

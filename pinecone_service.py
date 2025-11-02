@@ -21,6 +21,10 @@ def clear_vectorspace():
     index.delete(delete_all=True)
 
 
+def query_cocktails(top_k, vector):
+    return index.query(top_k=top_k, include_metadata=True, vector=vector)
+
+
 
 def _create_vectors_to_upsert(cocktails: list[Cocktail], embeddings: dict[int, list[float]]):
     vectors = []

@@ -1,16 +1,20 @@
-from fastmcp import FastMCP
+#!/usr/bin/env python3
+"""
+Simple test script to verify the rag_cocktails function works correctly
+"""
+
+import sys
+import json
 from config.logger import logger
 
-mcp = FastMCP("Demo 🚀")
-
-@mcp.tool
-def rag_cocktails(query: str):
-    """Retrieve cocktail recommendations based on a query."""
+def test_rag_cocktails_logic():
+    """Test the rag_cocktails function logic directly"""
     try:
         from embedding_service import embed_query
         from pinecone_service import query_cocktails
 
-        logger.info(f"Processing query: {query}")
+        query = "lime or mint"
+        logger.info(f"Testing rag_cocktails logic with query: {query}")
         
         # Validate input
         if not query or not isinstance(query, str):
@@ -114,37 +118,26 @@ def rag_cocktails(query: str):
         
         # Final validation - ensure the result is JSON serializable
         try:
-            import json
-            json.dumps(serializable_matches)  # Test serialization
-            logger.info(f"JSON serialization test passed")
+            json_result = json.dumps(serializable_matches, indent=2)
+            logger.info(f"Successfully serialized result to JSON")
+            logger.info(f"Result contains {len(serializable_matches)} matches")
+            
+            if serializable_matches:
+                logger.info(f"First match: {serializable_matches[0]}")
+            
+            print("Test passed! The function works correctly and returns JSON-serializable data.")
+            return serializable_matches
         except Exception as json_error:
             logger.error(f"Failed to serialize result to JSON: {str(json_error)}")
-            # Return a safe fallback
             return []
         
-        # Convert to basic Python types to ensure compatibility
-        safe_result = []
-        for match in serializable_matches:
-            safe_match = {
-                "id": str(match["id"]),
-                "score": float(match["score"]),
-                "metadata": dict(match["metadata"])
-            }
-            safe_result.append(safe_match)
-        
-        return safe_result
-        
     except Exception as e:
-        logger.error(f"Error in rag_cocktails: {str(e)}")
+        logger.error(f"Test failed: {str(e)}")
         import traceback
         logger.error(f"Traceback: {traceback.format_exc()}")
-        # Return an empty list as a safe fallback
         return []
 
-@mcp.tool
-def add(a: int, b: int) -> int:
-    """Add two numbers"""
-    return a + b
-
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    result = test_rag_cocktails_logic()
+    success = len(result) > 0
+    sys.exit(0 if success else 1)
