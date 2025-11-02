@@ -7,8 +7,8 @@ mcp = FastMCP("Demo 🚀")
 def rag_cocktails(query: str):
     """Retrieve cocktail recommendations based on a query."""
     try:
-        from embedding_service import embed_query
-        from pinecone_service import query_cocktails
+        from service.embedding_service import embed_query
+        from service.pinecone_service import query_cocktails
 
         logger.info(f"Processing query: {query}")
         
@@ -140,11 +140,6 @@ def rag_cocktails(query: str):
         logger.error(f"Traceback: {traceback.format_exc()}")
         # Return an empty list as a safe fallback
         return []
-
-@mcp.tool
-def add(a: int, b: int) -> int:
-    """Add two numbers"""
-    return a + b
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")

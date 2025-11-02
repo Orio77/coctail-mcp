@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-@dataclass
+@dataclass(frozen=True)
 class Ingredient:
     id: int
     name: str
     description: str
-    alcoholic: bool
+    alcohol: bool
     type: str
     image_url: str
